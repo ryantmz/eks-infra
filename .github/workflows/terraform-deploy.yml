@@ -91,7 +91,7 @@ jobs:
           name: terraform-plan
 
       - name: Terraform Apply
-        run: terraform apply -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}" -input=false "planfile"
+        run: terraform apply -input=false "planfile"
 
   cleanup:
     runs-on: ubuntu-latest
@@ -126,4 +126,4 @@ jobs:
     #       name: terraform-artifacts
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
+        run: terraform destroy -auto-approve
