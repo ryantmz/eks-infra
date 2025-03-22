@@ -11,7 +11,7 @@ env:
   ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
 
 jobs:
-  init:
+  plan:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
