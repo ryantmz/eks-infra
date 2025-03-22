@@ -125,4 +125,4 @@ jobs:
     #       name: terraform-artifacts
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
