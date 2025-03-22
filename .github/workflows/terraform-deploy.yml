@@ -54,52 +54,51 @@ jobs:
           name: terraform-plan
           path: planfile
 
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-        id-token: write
-        contents: read
-    needs: plan
-    environment: production # or your environment
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#   deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#         id-token: write
+#         contents: read
+#     needs: plan
+#     environment: production # or your environment
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v3
+#         with:
+#           terraform_version: 1.9
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-            role-to-assume: ${{ env.ROLE_ARN }}
-            role-session-name: GitHubActions-${{ github.run_id }}
-            aws-region: ${{ env.AWS_REGION }}
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#             role-to-assume: ${{ env.ROLE_ARN }}
+#             role-session-name: GitHubActions-${{ github.run_id }}
+#             aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
+#       - name: Terraform Init
+#         run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
   
-    #   - name: Download Terraform Artifacts
-    #     uses: actions/download-artifact@v4
-    #     with:
-    #       name: terraform-artifacts
+#     #   - name: Download Terraform Artifacts
+#     #     uses: actions/download-artifact@v4
+#     #     with:
+#     #       name: terraform-artifacts
 
-      - name: Download Terraform Plan Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-plan
+#       - name: Download Terraform Plan Artifacts
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: terraform-plan
 
-      - name: Terraform Apply
-        run: terraform apply -input=false "planfile"
+#       - name: Terraform Apply
+#         run: terraform apply -input=false "planfile"
 
   cleanup:
     runs-on: ubuntu-latest
     permissions:
         id-token: write
         contents: read
-    needs: deploy
-    if: github.event_name == 'push' # Only on push events. you can change the condition
+    needs: plan
     environment: production # or your environment
     steps:
       - name: Checkout code
