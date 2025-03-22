@@ -70,21 +70,13 @@ jobs:
         with:
           terraform_version: 1.9
 
-      - name: List artifacts
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const artifacts = await github.rest.actions.listArtifactsForWorkflowRun({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            run_id: context.runId,
-            });
-            console.log(artifacts);
-
-      - name: Download Terraform Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-artifacts
+      - name: Terraform Init
+        run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
+  
+    #   - name: Download Terraform Artifacts
+    #     uses: actions/download-artifact@v4
+    #     with:
+    #       name: terraform-artifacts
 
       - name: Download Terraform Plan Artifacts
         uses: actions/download-artifact@v4
