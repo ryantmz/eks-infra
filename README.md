@@ -15,6 +15,7 @@ Terraform Configuration in Release Pipeline:
 > - Configure TF commands to provision EKS cluster
 
 ## Tests & Review:
+https://github.com/ryantmz/eks-infra/actions/runs/14007342304
 Ran GHA pipeline, successfully logging into AWS via OIDC
 
 ![Screenshot 2025-03-22 at 10 04 40](https://github.com/user-attachments/assets/068428c8-0dcc-4f24-a419-8c092a375fd2)
