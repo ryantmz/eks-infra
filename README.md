@@ -1,27 +1,16 @@
-# Project 20 - Provision EKS Cluster with Secure Access Management
+# Project 21: Secure IaC Pipeline for EKS Provisioning using AWS STS Web Identity
+Create IaC Pipeline that establishes a secure connection with AWS using trusted, third-party web identity provider
 
 ## Technologies used:
-AWS EKS, AWS IAM, Terraform, Kubernetes
+GitLab CI, AWS EKS, AWS STS, AWS IAM, Terraform, Kubernetes
 
 ## Project Description:
-Infrastructure as Code configuration to:
-- Provision a base EKS cluster
-Add Configuration for Access Management:
-- Configure AWS IAM Roles for Access on AWS Level
-- Define Kubernetes Access with Role Based Access Control
-(RBAC) - creating K8s Roles and ClusterRoles
-- Configure Mapping between IAM Roles and K8s Users
+AWS Cloud Configuration:
+- Configure Authentication with GitLab OIDC Identity Provider
+> - Create Web Identity on AWS cloud
+> - Create IAM Role with with GitLab’s Identity Provider as Trusted Entity
+GitLab Pipeline Configuration
+> - Add Pipeline configuration that establishes a secure connection with temporary credentials on every jobexecution
+Terraform Configuration in Release Pipeline:
+> - Configure TF commands to provision EKS cluster
 
-## Tests and Review:
-### Terraform Deployment
-![Screenshot 2025-03-21 at 13 27 47](https://github.com/user-attachments/assets/2b3a1dbf-5139-40cc-af2f-2f8325d667ec)
-
-### K8s Admin
-![Screenshot 2025-03-21 at 13 53 43](https://github.com/user-attachments/assets/efd03bf3-157b-492c-b50d-e75a74aff81e)
-- Assume aws_iam_role.external_admin
-- Get pods
-
-### K8s Developer
-![Screenshot 2025-03-21 at 14 00 45](https://github.com/user-attachments/assets/8fd83027-5d1d-4046-82b9-c1ce8a27ecd8)
-- Assume aws_iam_role.external_developer
-- Get pods (Error/ Forbidden, as its role is limited within its namespace. Get pods for its namespace shows no resources instead of an error)
