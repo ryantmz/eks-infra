@@ -35,7 +35,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }} # use github env
 
       - name: Terraform Init
-        run: terraform init -var=${{ env.TF_VAR_ADMIN_ROLE }} -var=${{ env.TF_VAR_DEVELOPER_ROLE }}
+        run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_developer_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
 
       - name: Upload Terraform Artifacts
         uses: actions/upload-artifact@v4
@@ -46,7 +46,7 @@ jobs:
             .terraform.lock.hcl
 
       - name: Terraform Plan
-        run: terraform plan -var=${{ env.TF_VAR_ADMIN_ROLE }} -var=${{ env.TF_VAR_DEVELOPER_ROLE }} -out "planfile"
+        run: terraform plan -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_developer_role=${{ env.TF_VAR_DEVELOPER_ROLE }}" -out "planfile"
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v4
@@ -88,7 +88,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Apply
-        run: terraform apply -var=${{ env.TF_VAR_ADMIN_ROLE }} -var=${{ env.TF_VAR_DEVELOPER_ROLE }} -input=false "planfile"
+        run: terraform apply -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_developer_role=${{ env.TF_VAR_DEVELOPER_ROLE }}" -input=false "planfile"
 
   cleanup:
     runs-on: ubuntu-latest
@@ -120,4 +120,4 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var=${{ env.TF_VAR_ADMIN_ROLE }} -var=${{ env.TF_VAR_DEVELOPER_ROLE }}
+        run: terraform destroy -auto-approve -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_developer_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
