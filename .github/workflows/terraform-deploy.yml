@@ -70,6 +70,13 @@ jobs:
         with:
           terraform_version: 1.9
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            role-to-assume: ${{ env.ROLE_ARN }}
+            role-session-name: GitHubActions-${{ github.run_id }}
+            aws-region: ${{ env.AWS_REGION }}
+
       - name: Terraform Init
         run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
   
@@ -82,13 +89,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.ROLE_ARN }}
-          role-session-name: GitHubActions-${{ github.run_id }}
-          aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Apply
         run: terraform apply -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}" -input=false "planfile"
@@ -110,6 +110,13 @@ jobs:
         with:
           terraform_version: 1.9
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            role-to-assume: ${{ env.ROLE_ARN }}
+            role-session-name: GitHubActions-${{ github.run_id }}
+            aws-region: ${{ env.AWS_REGION }}
+            
       - name: Terraform Init
         run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
               
@@ -117,13 +124,6 @@ jobs:
     #     uses: actions/download-artifact@v4
     #     with:
     #       name: terraform-artifacts
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.ROLE_ARN }}
-          role-session-name: GitHubActions-${{ github.run_id }}
-          aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
