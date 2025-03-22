@@ -1,5 +1,10 @@
 terraform {
   required_version = ">= 1.0"
+  backend "s3" {
+    bucket = "eks-infra-infra-bucket"
+    key = "infra/terraform.tfstate"
+    region = "eu-west-2"
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -14,8 +19,6 @@ terraform {
 
 provider "aws" {
   region     = var.aws_region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_access_key
 }
 
 provider "kubernetes" {

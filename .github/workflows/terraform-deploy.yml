@@ -35,6 +35,14 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Upload Terraform Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-artifacts
+          path: |
+            .terraform/
+            .terraform.lock.hcl
+
       - name: Terraform Plan
         run: terraform plan -out "planfile"
 
@@ -61,6 +69,11 @@ jobs:
           terraform_version: 1.9
 
       - name: Download Terraform Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-artifacts
+
+      - name: Download Terraform Plan Artifacts
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
