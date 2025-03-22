@@ -110,10 +110,13 @@ jobs:
         with:
           terraform_version: 1.9
 
-      - name: Download Terraform Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-artifacts
+      - name: Terraform Init
+        run: terraform init -var="user_for_admin_role=${{ env.TF_VAR_ADMIN_ROLE }}" -var="user_for_dev_role=${{ env.TF_VAR_DEVELOPER_ROLE }}"
+              
+    #   - name: Download Terraform Artifacts
+    #     uses: actions/download-artifact@v4
+    #     with:
+    #       name: terraform-artifacts
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
