@@ -35,41 +35,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Upload Terraform Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-artifacts
-          path: |
-            .terraform/
-            .terraform.lock.hcl
-
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-        id-token: write
-        contents: read
-    needs: init
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9
-
-      - name: Download Terraform Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-artifacts
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.ROLE_ARN }}
-          role-session-name: GitHubActions-${{ github.run_id }}
-          aws-region: ${{ env.AWS_REGION }}
-
       - name: Terraform Plan
         run: terraform plan -out "planfile"
 
@@ -84,7 +49,7 @@ jobs:
     permissions:
         id-token: write
         contents: read
-    needs: build
+    needs: plan
     environment: production # or your environment
     steps:
       - name: Checkout code
@@ -96,11 +61,6 @@ jobs:
           terraform_version: 1.9
 
       - name: Download Terraform Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-artifacts
-
-      - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
