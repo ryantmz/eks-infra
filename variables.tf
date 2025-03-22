@@ -29,9 +29,5 @@ variable "tags" {
   }
 }
 
-variable "user_for_admin_role" {
-    default = "arn:aws:iam::992382760996:user/k8s-admin"
-}
-variable "user_for_dev_role" {
-    default   = "arn:aws:iam::992382760996:user/k8s-developer"
-}
+variable "user_for_admin_role" {}
+variable "user_for_dev_role" {}
